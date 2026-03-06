@@ -3,7 +3,7 @@ import cv2
 import sys
 import segmentation
 
-img = cv2.imread('imgs/image.png')
+img = cv2.imread('imgs/image5.png')
 if img is None:
     sys.exit("Error: Image not found or unable to read.")
 

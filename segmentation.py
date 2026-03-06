@@ -10,12 +10,26 @@ def get_individual_pieces(image):
     # convert the image to grayscale
     gray_img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-    # apply thresholding to create a binary image
-    ret, thresh_img = cv2.threshold(gray_img, 127, 255, cv2.THRESH_BINARY_INV) # invert the image to get the pieces as white
+    # gaussian blur to reduce noise and improve contour detection
+    blurred_img = cv2.GaussianBlur(gray_img, (5,5), 0)
 
-    # canny edge detection to find edges in the image (?)
+    # apply thresholding to create a binary image
+    ret, thresh_img = cv2.threshold(blurred_img, 127, 255, cv2.THRESH_BINARY_INV) # invert the image to get the pieces as white
+
+    # apply addaptive thresholding to handle varying lighting conditions
+    #adpt_thresh_img = cv2.adaptiveThreshold(blurred_img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 11, 2)
+
+    # canny edge detection to find edges in the image
+    edges = cv2.Canny(blurred_img, 100, 200, apertureSize=3)
 
     # find contours in the binary image
     contours, hierarchy = cv2.findContours(thresh_img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE) # find external contours only
 
-    return contours
+    # iterate through the contours and calculate the area of each contour to filter out small noise
+    for i, contour in enumerate(contours):
+        area = cv2.contourArea(contour)
+        print(f"Countour {i}: Area = {area}")
+    
+    filtered_contours = [contour for contour in contours if cv2.contourArea(contour) > 1200]
+
+    return filtered_contours
