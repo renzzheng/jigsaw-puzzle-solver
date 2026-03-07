@@ -4,7 +4,7 @@ import sys
 import segmentation
 import pieces
 
-img = cv2.imread('imgs/image5.png')
+img = cv2.imread('imgs/image6.png')
 if img is None:
     sys.exit("Error: Image not found or unable to read.")
 
