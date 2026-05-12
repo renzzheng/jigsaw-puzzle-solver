@@ -4,3 +4,5 @@ imgs/
 
 /matching.py
 /characterization.py
+
+.DS_Store

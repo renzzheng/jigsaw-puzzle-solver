@@ -36,13 +36,14 @@ for i, piece in enumerate(cropped_pieces):
     # wait for a key press and close the displayed image
 
     distances, peaks = edges.extract_edges(contours[i])
+
     print(f"Distances for piece {i}: {distances}")
     plt.plot(distances)
     plt.plot(peaks, distances[peaks], "x", color="red")
     plt.title(f"Distance from centroid for piece {i}")
     plt.xlabel("Contour Point Index")
     plt.ylabel("Distance")
-    # plt.show()
+    plt.show()
 
     k = cv2.waitKey(0)
 
